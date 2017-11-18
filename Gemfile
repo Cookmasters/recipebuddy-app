@@ -4,6 +4,7 @@ source 'https://rubygems.org'
 ruby '2.4.2'
 
 # Networking gems
+gem 'bootstrap', '~> 4.0.0.beta2'
 gem 'http'
 
 # Development/Debugging related
