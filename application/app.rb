@@ -5,13 +5,16 @@ require 'roda'
 module RecipeBuddy
   # Web App
   class App < Roda
-    plugin :halt
+    plugin :render, engine: 'slim', views: 'presentation/views'
+    plugin :assets, css: 'style.css', path: 'presentation/assets'
 
     route do |routing|
-      # app = App
+      routing.assets
+      app = App
 
       # GET / request
       routing.root do
+        view 'home'
       end
 
       routing.on '' do

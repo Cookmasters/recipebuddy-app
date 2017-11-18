@@ -1,17 +1,24 @@
 # frozen_string_literal: false
 
 source 'https://rubygems.org'
-ruby '2.4.1'
+ruby '2.4.2'
 
 # Networking gems
 gem 'http'
 
+# Development/Debugging related
+gem 'pry' # to run console in production
+gem 'rake' # to run console in production
+
 # Web app related
 gem 'econfig'
-gem 'pry' # to run console in production
 gem 'puma'
-gem 'rake' # to run console in production
 gem 'roda'
+gem 'slim'
+
+# Representers
+gem 'multi_json'
+gem 'roar'
 
 group :test do
   gem 'minitest'

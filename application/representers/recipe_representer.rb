@@ -1,0 +1,27 @@
+# frozen_string_literal: true
+
+# Represents essential Recipe information for API output
+# USAGE:
+#   recipe = # Get from gateway
+#   RecipeRepresenter.new(OpenStruct.new).from_json recipe
+
+require_relative 'video_representer'
+
+# Add Representer to module
+module RecipeBuddy
+  class RecipeRepresenter < Roar::Decorator
+    include Roar::JSON
+
+    property :origin_id
+    property :created_time
+    property :content
+    property :full_picture
+    property :reactions_like
+    property :reactions_love
+    property :reactions_wow
+    property :reactions_haha
+    property :reactions_sad
+    property :reactions_angry
+    collection :videos, extend: VideoRepresenter, class: OpenStruct
+  end
+end
