@@ -25,21 +25,13 @@ html
       crossorigin="anonymous"
     }
 
-    div class="navbar navbar-default navbar-fixed-top" id='html_body'
+    div class="navbar navbar-default navbar-fixed-top"
       div class="container"
         div class="navbar-header"
           a href="/" class="navbar-brand" RecipeBuddy
 
     div class="container"
-      p This example shows you what a basic Slim file looks like.
-      p This example shows you what a basic Slim file looks like.
-      p This example shows you what a basic Slim file looks like.
-      p This example shows you what a basic Slim file looks like.
-      p This example shows you what a basic Slim file looks like.
-      p This example shows you what a basic Slim file looks like.
-      p This example shows you what a basic Slim file looks like.
-      p This example shows you what a basic Slim file looks like.
-      p This example shows you what a basic Slim file looks like.
-      == yield
-      footer class="main-footer"
-        Copyright &copy; 2017 Cookmasters
+      section class="section section-primary mt-none"
+        == yield
+
+      == render 'footer'

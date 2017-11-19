@@ -3,7 +3,7 @@
 require 'roda'
 require 'econfig'
 
-module CodePraise
+module RecipeBuddy
   # Configuration for the App
   class App < Roda
     plugin :environments

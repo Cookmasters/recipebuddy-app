@@ -14,10 +14,18 @@ module RecipeBuddy
 
       # GET / request
       routing.root do
-        view 'home'
+        recipes_json = ApiGateway.new.all_recipes
+        all_recipes = RecipeBuddy::RecipesRepresenter.new(OpenStruct.new)
+                                                     .from_json recipes_json
+        view 'home', locals: { recipes: all_recipes.recipes }
       end
 
-      routing.on '' do
+      routing.on 'page' do
+        routing.post do
+          pagename = routing.params['pagename'].downcase
+          ApiGateway.new.create_page(pagename)
+          routing.redirect '/'
+        end
       end
     end
   end

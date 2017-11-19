@@ -1,0 +1,59 @@
+br
+br
+br
+br
+br
+br
+form role="form" action="/page" method='post' id='add-page-form'
+    .row.vertical-align.query-bar
+      .col-xs-3
+        .text-right Facebook public page/group name:
+      .col-xs-6
+        input{
+          type='text' name='pagename'
+          id='github_url_input' class="form-control"
+          placeholder="e.g.: RecipesAndCookingGuide"
+        }
+      .col-xs-3
+        button{
+            type='submit' id='repo-form-submit' class='submit'
+            value='submit' class="btn btn-primary"
+          } + Get recipes
+    .row
+      .col-xs-12.blank-row
+div class="container"
+  #{recipes}
+  - if recipes.empty?
+      div class="row mt-xlg"
+        div class="col-md-12"
+          h2 No recipes for now. Come back later.
+  - else
+    div class="row mt-xlg"
+      div class="col-md-12"
+        h2 Our best recipes
+      div class="row mb-xlg"
+    - recipes.each.with_index do |recipe, index|
+        div class="col-md-3 col-sm-6 col-xs-12" style="width: 300px; height: 400px"
+          div class="card"
+            h3 class="card-header" Recipe title
+            div class="card-body"
+              h5 class="card-title" Category
+            div class="card-body"
+              p class="card-text" #{ recipe.content }
+            div class="card-footer"
+              span class="badge badge-success" #{recipe.reactions_like}
+              span class="badge badge-primary" #{recipe.reactions_love}
+              span class="badge badge-info" #{recipe.reactions_wow}
+              span class="badge badge-danger" #{recipe.reactions_haha}
+              span class="badge badge-danger" #{recipe.reactions_sad}
+              span class="badge badge-light" #{recipe.reactions_angry}
+
+
+br
+br
+br
+br
+br
+br
+br
+br

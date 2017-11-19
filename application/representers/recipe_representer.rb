@@ -9,6 +9,7 @@ require_relative 'video_representer'
 
 # Add Representer to module
 module RecipeBuddy
+  # Represents essential Recipe information for API output
   class RecipeRepresenter < Roar::Decorator
     include Roar::JSON
 

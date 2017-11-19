@@ -4,6 +4,7 @@ require_relative 'recipe_representer'
 
 # Represents essential Page information for API output
 module RecipeBuddy
+  # Represents essential Page information for API output
   class PageRepresenter < Roar::Decorator
     include Roar::JSON
 
