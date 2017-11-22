@@ -10,14 +10,14 @@ form role="form" action="/page" method='post' id='add-page-form'
         .text-right Facebook public page/group name:
       .col-xs-6
         input{
-          type='text' name='pagename'
-          id='github_url_input' class="form-control"
+          type='text' name='url'
+          id='url_input' class="form-control"
           placeholder="e.g.: RecipesAndCookingGuide"
         }
       .col-xs-3
         button{
-            type='submit' id='repo-form-submit' class='submit'
-            value='submit' class="btn btn-primary"
+            type='submit' id='page_form_submit' name='page_form_submit'
+            value='submit' class="btn btn-success submit"
           } + Get recipes
     .row
       .col-xs-12.blank-row
