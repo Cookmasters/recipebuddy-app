@@ -13,6 +13,10 @@ module RecipeBuddy
       call_api(:get, 'recipe')
     end
 
+    def all_page
+      call_api(:get, 'page')
+    end
+
     def page(pagename)
       call_api(:get, ['page', pagename])
     end
