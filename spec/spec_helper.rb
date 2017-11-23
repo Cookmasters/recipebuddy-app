@@ -11,7 +11,9 @@ require 'headless'
 
 require './init.rb' # to call API infrastructure helpers
 
-HOST = 'http://localhost:9292/'
+Selenium::WebDriver::Chrome.driver_path = "spec/chromedriver"
+
+HOST = 'http://localhost:9000/'
 
 # Helper methods
 def homepage

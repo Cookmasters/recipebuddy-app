@@ -6,7 +6,7 @@ describe 'Homepage' do
   before do
     unless @browser
       RecipeBuddy::ApiGateway.new.delete_all_pages
-      @headless = Headless.new
+      # @headless = Headless.new
       @browser = Watir::Browser.new
       @browser.goto 'http://localhost:9292'
     end
@@ -14,13 +14,13 @@ describe 'Homepage' do
 
   after do
     @browser.close
-    @headless.destroy
+    # @headless.destroy
   end
 
   describe 'Empty Homepage' do
     it '(HAPPY) should see no content' do
       # GIVEN: user is on the home page without any projects
-      @browser.goto homepage
+      # @browser.goto homepage
 
       # THEN: user should see basic headers, no projects and a welcome message
       _(@browser.text_field(name: 'url').visible?).must_equal true
