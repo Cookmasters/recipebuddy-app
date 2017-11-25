@@ -21,25 +21,25 @@ module RecipeBuddy
         recipes_json = ApiGateway.new.all_recipes
         all_recipes = RecipeBuddy::RecipesRepresenter.new(OpenStruct.new)
                                                      .from_json recipes_json
-        if all_recipes.recipes.count.zero?
-          flash.now[:notice] = 'Add a Facebook page/group to get started'
+
+        recipes = Views::AllRecipes.new(all_recipes)
+        if recipes.none?
+          flash.now[:notice] = 'Add a Facebook public page/group to get started'
         end
-        view 'home', locals: { recipes: all_recipes.recipes }
+        view 'home', locals: { recipes: recipes }
       end
 
       routing.on 'page' do
         routing.post do
-          create_request = Forms::UrlRequest.call(routing.params)
-          if create_request.success?
-            begin
-              ApiGateway.new.create_page(pagename)
-              flash[:notice] = 'New Facebook Page/group added!'
-            rescue StandardError => error
-              flash[:error] = error.to_s
-            end
+          create_request = Forms::FacebookNameValidator.call(routing.params)
+          result = AddPage.new.call(create_request)
+
+          if result.success?
+            flash[:notice] = 'New Facebook Page/group added!'
           else
-            flash[:error] = create_request.errors.values.join('; ')
+            flash[:error] = result.value
           end
+
           routing.redirect '/'
         end
       end
