@@ -14,6 +14,7 @@ module RecipeBuddy
     include Roar::JSON
 
     property :origin_id
+    property :title
     property :created_time
     property :content
     property :full_picture
