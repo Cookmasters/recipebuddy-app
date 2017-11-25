@@ -1,17 +1,13 @@
 br
 br
-br
-br
-br
-br
 form role="form" action="/page" method='post' id='add-page-form'
     .row.vertical-align.query-bar
       .col-xs-3
         .text-right Facebook public page/group name:
       .col-xs-6
         input{
-          type='text' name='url'
-          id='input' class="form-control"
+          type='text' name='page_name'
+          id='page_name_input' class="form-control"
           placeholder="e.g.: RecipesAndCookingGuide"
         }
       .col-xs-3
@@ -22,31 +18,31 @@ form role="form" action="/page" method='post' id='add-page-form'
     .row
       .col-xs-12.blank-row
 div class="container"
-  #{recipes}
-  - if recipes.empty?
+  - if recipes.none?
       div class="row mt-xlg"
         div class="col-md-12"
-          h2 No recipes for now. Come back later.
+          h2 No recipes for now. Please add a facebook page to start.
   - else
-    div class="row mt-xlg"
+    div class="row mt-xlg" id="recipes_div"
       div class="col-md-12"
         h2 Our best recipes
       div class="row mb-xlg"
-    - recipes.each.with_index do |recipe, index|
-        div class="col-md-3 col-sm-6 col-xs-12" style="width: 300px; height: 400px"
+    - recipes.collection.each.with_index do |recipe, index|
+        div class="col-md-3 col-sm-6 col-xs-12" style="overflow-y: scroll; width: 300px; height:400px;"
           div class="card"
-            h3 class="card-header" Recipe title
+            h4 class="card-header"
+              = recipe.title
             div class="card-body"
-              h5 class="card-title" Category
+              p class="card-text"
+                == recipe.ingredients
             div class="card-body"
-              p class="card-text" #{ recipe.content }
+              h5 class="card-title"
+                = recipe.page
             div class="card-footer"
-              span class="badge badge-success" #{recipe.reactions_like}
-              span class="badge badge-primary" #{recipe.reactions_love}
-              span class="badge badge-info" #{recipe.reactions_wow}
-              span class="badge badge-danger" #{recipe.reactions_haha}
-              span class="badge badge-danger" #{recipe.reactions_sad}
-              span class="badge badge-light" #{recipe.reactions_angry}
+              span class="badge badge-success"
+                = recipe.positive_reactions
+              span class="badge badge-danger"
+                = recipe.negative_reactions
 
 
 br
