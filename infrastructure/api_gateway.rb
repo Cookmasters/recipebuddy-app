@@ -25,13 +25,12 @@ module RecipeBuddy
       call_api(:post, ['page', pagename])
     end
 
-    def delete_all_pages
+    def delete_all_recipes
       call_api(:delete, 'recipe')
     end
 
     def call_api(method, resources)
       url_route = [@config.api_url, resources].flatten.join '/'
-      puts url_route
       result = HTTP.send(method, url_route)
       raise(result.parse['message']) if result.code >= 300
       result.to_s
