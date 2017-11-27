@@ -12,7 +12,7 @@ module RecipeBuddy
 
     def validate_input(input)
       if input.success?
-        pagename = input[:page_name]
+        pagename = input[:page_url].split('/')[-1]
         Right(pagename: pagename)
       else
         Left(input.errors.values.join('; '))
@@ -20,8 +20,8 @@ module RecipeBuddy
     end
 
     def add_page(input)
-      ApiGateway.new.create_page(input[:pagename])
-      Right(input)
+      response = ApiGateway.new.create_page(input[:pagename])
+      Right(response: response)
     rescue StandardError => error
       Left(error.to_s)
     end
