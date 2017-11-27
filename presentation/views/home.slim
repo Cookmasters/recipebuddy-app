@@ -3,12 +3,12 @@ br
 form role="form" action="/page" method='post' id='add-page-form'
     .row.vertical-align.query-bar
       .col-xs-3
-        .text-right Facebook public page/group name:
+        .text-right Facebook public page URL:
       .col-xs-6
         input{
-          type='text' name='page_name'
-          id='page_name_input' class="form-control"
-          placeholder="e.g.: RecipesAndCookingGuide"
+          type='text' name='page_url'
+          id='page_url_input' class="form-control"
+          placeholder="e.g.: https://www.facebook.com/RecipesAndCookingGuide"
         }
       .col-xs-3
         button{
@@ -21,28 +21,14 @@ div class="container"
   - if recipes.none?
       div class="row mt-xlg"
         div class="col-md-12"
-          h2 No recipes for now. Please add a facebook page to start.
+          h2 No recipes for now. Please add a Facebook page to start.
   - else
     div class="row mt-xlg" id="recipes_div"
       div class="col-md-12"
         h2 Our best recipes
       div class="row mb-xlg"
     - recipes.collection.each.with_index do |recipe, index|
-        div class="col-md-3 col-sm-6 col-xs-12" style="overflow-y: scroll; width: 300px; height:400px;"
-          div class="card"
-            h4 class="card-header"
-              = recipe.title
-            div class="card-body"
-              p class="card-text"
-                == recipe.ingredients
-            div class="card-body"
-              h5 class="card-title"
-                = recipe.page
-            div class="card-footer"
-              span class="badge badge-success"
-                = recipe.positive_reactions
-              span class="badge badge-danger"
-                = recipe.negative_reactions
+        include recipe_card
 
 
 br

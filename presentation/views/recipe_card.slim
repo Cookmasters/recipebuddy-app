@@ -1,8 +1,15 @@
-div class="card"
-  h3 class="card-header" Recipe title
-  div class="card-body"
-    h5 class="card-title" Category
-  div class="card-body"
-    p class="card-text" #{recipe.content}
-  div class="card-footer text-muted"
-    ="2 days ago"
+div class="col-md-3 col-sm-6 col-xs-12" style="overflow-y: scroll; width: 300px; height:400px;"
+  div class="card"
+    h4 class="card-header"
+      = recipe.title
+    div class="card-body"
+      p class="card-text"
+        == recipe.ingredients
+    div class="card-body"
+      h5 class="card-title"
+        = recipe.page
+    div class="card-footer"
+      span class="badge badge-success"
+        = recipe.positive_reactions
+      span class="badge badge-danger"
+        = recipe.negative_reactions

@@ -1,0 +1,15 @@
+br
+br
+div class="container"
+  - if page.recipes.none?
+      div class="row mt-xlg"
+        div class="col-md-12"
+          h2 No recipes for this Facebook page.
+  - else
+    div class="row mt-xlg" id="recipes_div"
+      div class="col-md-12"
+        h2 List of recipes for
+        a href=page.link #{page.name}
+      div class="row mb-xlg"
+    - page.recipes.collection.each.with_index do |recipe, index|
+        include recipe_card
