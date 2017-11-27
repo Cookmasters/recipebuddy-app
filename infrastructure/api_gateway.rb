@@ -13,11 +13,15 @@ module RecipeBuddy
       call_api(:get, 'recipe')
     end
 
+    def best_recipes
+      call_api(:get, %w[recipe best])
+    end
+
     def all_page
       call_api(:get, 'page')
     end
 
-    def page(pagename)
+    def get_page(pagename)
       call_api(:get, ['page', pagename])
     end
 
