@@ -23,30 +23,31 @@ describe 'Homepage' do
 
       # THEN: user should see basic headers, no recipes and a welcome message
       _(@browser.div(id: 'main_header').text).must_equal 'RecipeBuddy'
-      _(@browser.text_field(name: 'page_name').visible?).must_equal true
+      _(@browser.text_field(name: 'page_url').visible?).must_equal true
       _(@browser.div(id: 'flash_bar_success').visible?).must_equal true
       _(@browser.div(id: 'flash_bar_success').text).must_include 'Add'
-      _(@browser.text_field(id: 'page_name_input').visible?).must_equal true
+      _(@browser.text_field(id: 'page_url_input').visible?).must_equal true
       _(@browser.button(id: 'page_form_submit').visible?).must_equal true
     end
   end
 
   # describe 'Add new Facebook page' do
   #   it '(BAD) should not accept incorrect URL' do
-  #     @browser.text_field(id: 'page_name_input').set('olcooker')
+  #     @browser.text_field(id: 'page_url_input').set('olcooker')
   #     @browser.button(id: 'page_form_submit').click
   #
   #     _(@browser.div(id: 'flash_bar_danger').text).must_include 'Invalid'
   #   end
   # end
 
-  describe 'Add new facebook page/group' do
+  describe 'Add new facebook page' do
     it '(HAPPY) should add valid Facebook page' do
       # GIVEN: user is on the home page
       @browser.goto homepage
 
       # WHEN: user enters a valid Page name to get the recipes
-      @browser.text_field(id: 'page_name_input').set('RecipesAndCookingGuide')
+      @browser.text_field(id: 'page_url_input')
+              .set('https://www.facebook.com/RecipesAndCookingGuide')
       @browser.button(id: 'page_form_submit').click
       _(@browser.div(id: 'flash_bar_success').text).must_include 'added'
       _(@browser.div(id: 'flash_bar_danger').exists?).must_equal false
@@ -68,14 +69,15 @@ describe 'Homepage' do
       @browser.goto homepage
 
       # WHEN: user does not enter a page name
-      @browser.text_field(id: 'page_name_input').set('')
+      @browser.text_field(id: 'page_url_input').set('')
       @browser.button(id: 'page_form_submit').click
 
       # THEN: user should see an error alert that the page name must be filled
       _(@browser.div(id: 'flash_bar_danger').text).must_equal 'must be filled'
 
       # WHEN: user enters a page which posts do not relate to recipes
-      @browser.text_field(id: 'page_name_input').set('thepracticaldev')
+      @browser.text_field(id: 'page_url_input')
+              .set('https://www.facebook.com/thepracticaldev/')
       @browser.button(id: 'page_form_submit').click
 
       # THEN: user should should see an error alert
@@ -87,9 +89,11 @@ describe 'Homepage' do
       @browser.goto homepage
 
       # WHEN: user enters a page name that was previously loaded
-      @browser.text_field(id: 'page_name_input').set('RecipesAndCookingGuide')
+      @browser.text_field(id: 'page_url_input')
+              .set('https://www.facebook.com/RecipesAndCookingGuide')
       @browser.button(id: 'page_form_submit').click
-      @browser.text_field(id: 'page_name_input').set('RecipesAndCookingGuide')
+      @browser.text_field(id: 'page_url_input')
+              .set('https://www.facebook.com/RecipesAndCookingGuide')
       @browser.button(id: 'page_form_submit').click
 
       # THEN: user should should see an error alert and the existing page
