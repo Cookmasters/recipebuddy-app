@@ -26,6 +26,7 @@ group :test do
   gem 'headless'
   gem 'minitest'
   gem 'minitest-rg'
+  gem 'page-object'
   gem 'rack-test'
   gem 'watir'
 end
