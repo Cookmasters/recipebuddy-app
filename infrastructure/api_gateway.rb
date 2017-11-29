@@ -34,7 +34,7 @@ module RecipeBuddy
     end
 
     def call_api(method, resources)
-      url_route = [@config.api_url, resources].flatten.join '/'
+      url_route = [@config.API_URL, resources].flatten.join '/'
       result = HTTP.send(method, url_route)
       raise(result.parse['message']) if result.code >= 300
       result.to_s
