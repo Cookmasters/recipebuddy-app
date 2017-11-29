@@ -9,7 +9,7 @@ div class="container"
     div class="row mt-xlg" id="recipes_div"
       div class="col-md-12"
         h2 List of recipes for
-        a href=page.link #{page.name}
+        a href=page.link target="_blank" #{page.name}
       div class="row mb-xlg"
     - page.recipes.collection.each.with_index do |recipe, index|
         include recipe_card
