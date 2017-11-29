@@ -1,8 +1,14 @@
 # frozen_string_literal: true
 
 require_relative 'spec_helper'
+require 'econfig'
 
 describe 'Homepage' do
+  extend Econfig::Shortcut
+
+  Econfig.env = 'development'
+  Econfig.root = '.'
+
   before do
     unless @browser
       RecipeBuddy::ApiGateway.new.delete_all_recipes
@@ -17,89 +23,81 @@ describe 'Homepage' do
   end
 
   describe 'Empty Homepage' do
+    include PageObject::PageFactory
+
     it '(HAPPY) should see no content' do
       # GIVEN: user is on the home page without any recipes
-      @browser.goto homepage
-
-      # THEN: user should see basic headers, no recipes and a welcome message
-      _(@browser.div(id: 'main_header').text).must_equal 'RecipeBuddy'
-      _(@browser.text_field(name: 'page_url').visible?).must_equal true
-      _(@browser.div(id: 'flash_bar_success').visible?).must_equal true
-      _(@browser.div(id: 'flash_bar_success').text).must_include 'Add'
-      _(@browser.text_field(id: 'page_url_input').visible?).must_equal true
-      _(@browser.button(id: 'page_form_submit').visible?).must_equal true
+      visit HomePage do |page|
+        # THEN: user should see basic headers, no recipes and a welcome message
+        _(page.main_header_element.text).must_equal 'RecipeBuddy'
+        _(page.page_url_element.visible?).must_equal true
+        _(page.flash_bar_success_element.visible?).must_equal true
+        _(page.flash_bar_success_element.text).must_include 'Add'
+        _(page.page_url_element.visible?).must_equal true
+        _(page.add_button_element.visible?).must_equal true
+      end
     end
   end
 
-  # describe 'Add new Facebook page' do
-  #   it '(BAD) should not accept incorrect URL' do
-  #     @browser.text_field(id: 'page_url_input').set('olcooker')
-  #     @browser.button(id: 'page_form_submit').click
-  #
-  #     _(@browser.div(id: 'flash_bar_danger').text).must_include 'Invalid'
-  #   end
-  # end
+  describe 'Add new facebook pages' do
+    include PageObject::PageFactory
 
-  describe 'Add new facebook page' do
-    it '(HAPPY) should add valid Facebook page' do
+    it '(HAPPY) should add Facebook page with valid URL' do
       # GIVEN: user is on the home page
-      @browser.goto homepage
+      visit HomePage do |page|
+        # WHEN: user enters a valid Facebook page URL to get the recipes
+        page.add_new_page 'https://www.facebook.com/RecipesAndCookingGuide'
 
-      # WHEN: user enters a valid Page name to get the recipes
-      @browser.text_field(id: 'page_url_input')
-              .set('https://www.facebook.com/RecipesAndCookingGuide')
-      @browser.button(id: 'page_form_submit').click
-      _(@browser.div(id: 'flash_bar_success').text).must_include 'added'
-      _(@browser.div(id: 'flash_bar_danger').exists?).must_equal false
+        # THEN: user should see a success flash bar and the recipes div
+        _(page.flash_bar_success_element.text).must_include 'added'
+        _(page.flash_bar_danger_element.exists?).must_equal false
+        _(page.recipes_div_element.exists?).must_equal true
+      end
+    end
 
-      # THEN: user should see the recipes of their new page listed in a div
-      # table = @browser.table(id: 'repos_table')
-      _(@browser.div(id: 'recipes_div').exists?).must_equal true
-      #
-      # row = table.rows[1]
-      # _(table.rows.count).must_equal 2
-      # _(row.td(id: 'td_owner').text).must_equal 'soumyaray'
-      # _(row.td(id: 'td_repo_name').text).must_equal 'YPBT-app'
-      # _(row.td(id: 'td_link').text).include? 'https'
-      # _(row.td(id: 'td_contributors').text.split(', ').count).must_equal 3
+    it 'HAPPY: should be able to add multiple Facebook pages' do
+      # GIVEN: on the homepage
+      visit HomePage do |page|
+        # WHEN: user enters a valid URL for two new pages
+        page.add_new_page 'https://www.facebook.com/RecipesAndCookingGuide'
+        page.navigate_to app.config.APP_URL
+        page.add_new_page 'https://www.facebook.com/easyrecipesly'
+
+        # THEN: user should see both new repos listed in a table
+        _(page.recipes_div_element.exists?).must_equal true
+      end
     end
 
     it '(BAD) should not accept incorrect URL' do
       # GIVEN: user is on the home page
-      @browser.goto homepage
+      visit HomePage do |page|
+        # WHEN: user does not enter a page name
+        page.add_new_page ''
 
-      # WHEN: user does not enter a page name
-      @browser.text_field(id: 'page_url_input').set('')
-      @browser.button(id: 'page_form_submit').click
+        # THEN: user should see an error alert that the page name must be filled
+        _(page.flash_bar_danger_element.exists?).must_equal true
+        _(page.flash_bar_danger_element.text).must_equal 'must be filled'
 
-      # THEN: user should see an error alert that the page name must be filled
-      _(@browser.div(id: 'flash_bar_danger').text).must_equal 'must be filled'
+        # WHEN: user enters a page which posts do not relate to recipes
+        page.add_new_page 'https://www.facebook.com/thepracticaldev/'
 
-      # WHEN: user enters a page which posts do not relate to recipes
-      @browser.text_field(id: 'page_url_input')
-              .set('https://www.facebook.com/thepracticaldev/')
-      @browser.button(id: 'page_form_submit').click
-
-      # THEN: user should should see an error alert
-      _(@browser.div(id: 'flash_bar_danger').text).must_include 'enough recipes'
+        # THEN: user should should see an error alert
+        _(page.flash_bar_danger_element.text).must_include 'enough recipes'
+      end
     end
 
     it '(SAD) should not accept duplicate page' do
       # GIVEN: user is on the home page
-      @browser.goto homepage
+      visit HomePage do |page|
+        # WHEN: user enters a page URL that was previously loaded
+        page.add_new_page 'https://www.facebook.com/RecipesAndCookingGuide'
+        page.navigate_to app.config.APP_URL
+        page.add_new_page 'https://www.facebook.com/RecipesAndCookingGuide'
 
-      # WHEN: user enters a page name that was previously loaded
-      @browser.text_field(id: 'page_url_input')
-              .set('https://www.facebook.com/RecipesAndCookingGuide')
-      @browser.button(id: 'page_form_submit').click
-      @browser.text_field(id: 'page_url_input')
-              .set('https://www.facebook.com/RecipesAndCookingGuide')
-      @browser.button(id: 'page_form_submit').click
-
-      # THEN: user should should see an error alert and the existing page
-      _(@browser.div(id: 'flash_bar_danger').text).must_include 'already loaded'
-      _(@browser.div(id: 'recipes_div').visible?).must_equal true
-      # _(@browser.table(id: 'repos_table').rows.count).must_equal 2
+        # THEN: user should should see an error alert and the existing page
+        _(page.flash_bar_danger_element.text).must_include 'already loaded'
+        _(page.recipes_div_element.visible?).must_equal true
+      end
     end
   end
 end
