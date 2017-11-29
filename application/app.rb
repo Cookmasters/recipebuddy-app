@@ -30,28 +30,32 @@ module RecipeBuddy
       end
 
       routing.on 'page' do
-        # routing.is String do |pagename|
-        #   # GET /api/v0.1/page/:pagename request
-        #   page_json = ApiGateway.new.get_page(pagename)
-        #   page = RecipeBuddy::PageRepresenter.new(OpenStruct.new)
-        #                                      .from_json page_json
-        #
-        #   view_page = Views::Page.new(page)
-        #   view 'page', locals: { page: view_page }
-        # end
+        routing.is String do |pagename|
+          # GET /api/v0.1/page/:pagename request
+          page_json = ApiGateway.new.get_page(pagename)
+          page = RecipeBuddy::PageRepresenter.new(OpenStruct.new)
+                                             .from_json page_json
+
+          view_page = Views::Page.new(page)
+          view 'page', locals: { page: view_page }
+        end
 
         routing.post do
           create_request = Forms::FacebookPageURLValidator.call(routing.params)
           result = AddPage.new.call(create_request)
-          # page = RecipeBuddy::PageRepresenter.new(OpenStruct.new)
-          #                                    .from_json result.value[:response]
 
           if result.success?
+            page =
+              RecipeBuddy::PageRepresenter
+              .new(OpenStruct.new)
+              .from_json result.value[:response]
+
             flash[:notice] = 'New Facebook Page added!'
+            routing.redirect '/page/' + page.name
           else
             flash[:error] = result.value
+            routing.redirect '/'
           end
-          routing.redirect '/'
         end
       end
     end
