@@ -18,6 +18,7 @@ gem 'roda'
 gem 'slim'
 
 # Application related
+gem 'dry-transaction'
 gem 'dry-validation'
 gem 'multi_json'
 gem 'roar'
