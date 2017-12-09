@@ -58,6 +58,18 @@ module RecipeBuddy
           end
         end
       end
+
+      routing.on 'recipe' do
+        routing.is Integer do |recipe_id|
+          # GET /api/v0.1/page/:pagename request
+          recipe_json = ApiGateway.new.get_recipe(recipe_id)
+          recipe = RecipeBuddy::RecipeRepresenter.new(OpenStruct.new)
+                                                 .from_json recipe_json
+
+          view_recipe = Views::Recipe.new(recipe)
+          view 'recipe', locals: { recipe: view_recipe }
+        end
+      end
     end
   end
 end

@@ -1,0 +1,18 @@
+.container
+  div class="expand"
+    h1 class="expand-header"
+      = recipe.title
+    div class="expand-body"
+      p class="card-text"
+        == recipe.ingredients
+        h1 class="expand-picture"
+          img src = "recipe.full_picture"
+    div class="card-body"
+      h3 class="expand-title"
+        = recipe.page
+
+    div class="expand-footer"
+      span class="badge badge-success"
+        = recipe.positive_reactions
+      span class="badge badge-danger"
+        = recipe.negative_reactions

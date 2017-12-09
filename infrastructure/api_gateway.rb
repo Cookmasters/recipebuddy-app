@@ -25,6 +25,10 @@ module RecipeBuddy
       call_api(:get, ['page', pagename])
     end
 
+    def get_recipe(recipe_id)
+      call_api(:get, ['recipe', recipe_id])
+    end
+
     def create_page(pagename)
       call_api(:post, ['page', pagename])
     end
