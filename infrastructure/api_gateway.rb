@@ -5,6 +5,40 @@ require 'http'
 module RecipeBuddy
   # API gateway
   class ApiGateway
+    # API response
+    class ApiResponse
+      HTTP_STATUS = {
+        200 => :ok,
+        201 => :created,
+        202 => :processing,
+        204 => :no_content,
+
+        403 => :forbidden,
+        404 => :not_found,
+        400 => :bad_request,
+        409 => :conflict,
+        422 => :cannot_process,
+
+        500 => :internal_error
+      }.freeze
+
+      attr_reader :status, :message
+
+      def initialize(code, message)
+        @code = code
+        @status = HTTP_STATUS[code]
+        @message = message
+      end
+
+      def ok?
+        HTTP_STATUS[@code] == :ok
+      end
+
+      def processing?
+        HTTP_STATUS[@code] == :processing
+      end
+    end
+
     def initialize(config = RecipeBuddy::App.config)
       @config = config
     end
@@ -41,7 +75,7 @@ module RecipeBuddy
       url_route = [@config.API_URL, resources].flatten.join '/'
       result = HTTP.send(method, url_route)
       raise(result.parse['message']) if result.code >= 300
-      result.to_s
+      ApiResponse.new(result.code, result.to_s)
     end
   end
 end

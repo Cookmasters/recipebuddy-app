@@ -18,7 +18,7 @@ module RecipeBuddy
 
       # GET / request
       routing.root do
-        recipes_json = ApiGateway.new.best_recipes
+        recipes_json = ApiGateway.new.best_recipes.message
         best_recipes = RecipeBuddy::RecipesRepresenter.new(OpenStruct.new)
                                                       .from_json recipes_json
 
