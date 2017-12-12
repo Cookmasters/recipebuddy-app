@@ -61,9 +61,9 @@ describe 'Homepage' do
         # WHEN: user enters a valid URL for two new pages
         page.add_new_page 'https://www.facebook.com/RecipesAndCookingGuide'
         page.navigate_to app.config.APP_URL
-        page.add_new_page 'https://www.facebook.com/easyrecipesly'
+        # page.add_new_page 'https://www.facebook.com/easyrecipesly'
 
-        # THEN: user should see both new repos listed in a table
+        # THEN: user should see the recipes div
         _(page.recipes_div_element.exists?).must_equal true
       end
     end
