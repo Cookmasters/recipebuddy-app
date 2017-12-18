@@ -8,9 +8,8 @@ module RecipeBuddy
         @recipe.videos
       end
 
-      def video_link(order)
-        order -= 1
-        "//www.youtube.com/embed/#{@recipe.videos[order].origin_id}"
+      def video_link(origin_id)
+        "//www.youtube.com/embed/#{origin_id}"
       end
     end
   end
