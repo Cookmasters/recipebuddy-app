@@ -13,6 +13,7 @@ module RecipeBuddy
   class RecipeRepresenter < Roar::Decorator
     include Roar::JSON
 
+    property :id
     property :origin_id
     property :title
     property :created_time
