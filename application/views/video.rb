@@ -4,8 +4,13 @@ module RecipeBuddy
   module Views
     # View object for a single Facebook recipe
     class Recipe
+      def videos
+        @recipe.videos
+      end
+
       def video_link(order)
-        "//www.youtube.com/embed/#{@recipe.videos[order-1].origin_id}"
+        order -= 1
+        "//www.youtube.com/embed/#{@recipe.videos[order].origin_id}"
       end
     end
   end
