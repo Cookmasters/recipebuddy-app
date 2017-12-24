@@ -42,7 +42,7 @@ module RecipeBuddy
 
         routing.post do
           create_request = Forms::FacebookPageURLValidator.call(routing.params)
-          result = AddPage.new.call(create_request)
+          result = AddPage.new.call(create_request).message
 
           if result.success?
             page =
