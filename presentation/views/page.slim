@@ -1,6 +1,6 @@
 br
 br
-div class="container"
+div class="container" id="recipes_container"
   - if page.recipes.none?
       div class="row mt-xlg"
         div class="col-md-12"
@@ -13,3 +13,17 @@ div class="container"
       div class="row mb-xlg"
     - page.recipes.collection.each.with_index do |recipe, index|
         include recipe_card
+- if page.loading?
+  script src = "#{page.ws_host}/faye.js"
+  javascript:
+    var channel = "#{page.ws_channel_id}";
+    console.log(channel);
+    var client = new Faye.Client("#{page.ws_host}/faye");
+    client.subscribe('/' + channel, function(message) {
+      recipe_json = $.parseJSON(message);
+      var positive_reactions = recipe_json['reactions_like'] + recipe_json['reactions_love'] + recipe_json['reactions_wow'] + recipe_json['reactions_haha']
+      var negative_reactions = recipe_json['reactions_sad'] + recipe_json['reactions_angry']
+      // Collect progressbar element and percentage
+      recipe = "<div class='col-md-3 col-sm-6 col-xs-12' style='overflow-y: scroll; width: 300px; height:400px;'><div class='card'><h4 class='card-header'>" + recipe_json['title'] + "</h4><div class='card-body'><p class='card-text'>" + recipe_json['content'].replace(/\n/g, "<br />") + "</p></div><div class='card-body'><h5 class='card-title'>Powered by </h5></div><div class='card-footer'><span class='badge badge-success'>" + positive_reactions + "</span><span class='badge badge-danger'>" + negative_reactions + "</span></div></div></div>"
+      $('#recipes_container').append(recipe);
+    });
