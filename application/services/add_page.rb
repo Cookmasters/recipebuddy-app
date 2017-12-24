@@ -20,7 +20,7 @@ module RecipeBuddy
     end
 
     def add_page(input)
-      response = ApiGateway.new.create_page(input[:pagename])
+      response = ApiGateway.new.create_page(input[:pagename]).message
       Right(response: response)
     rescue StandardError => error
       Left(error.to_s)
