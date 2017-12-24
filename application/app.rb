@@ -18,7 +18,7 @@ module RecipeBuddy
 
       # GET / request
       routing.root do
-        recipes_json = ApiGateway.new.best_recipes
+        recipes_json = ApiGateway.new.best_recipes.message
         best_recipes = RecipeBuddy::RecipesRepresenter.new(OpenStruct.new)
                                                       .from_json recipes_json
 
@@ -32,7 +32,7 @@ module RecipeBuddy
       routing.on 'page' do
         routing.is String do |pagename|
           # GET /api/v0.1/page/:pagename request
-          page_json = ApiGateway.new.get_page(pagename)
+          page_json = ApiGateway.new.get_page(pagename).message
           page = RecipeBuddy::PageRepresenter.new(OpenStruct.new)
                                              .from_json page_json
 
@@ -56,6 +56,18 @@ module RecipeBuddy
             flash[:error] = result.value
             routing.redirect '/'
           end
+        end
+      end
+
+      routing.on 'recipe' do
+        routing.is Integer do |recipe_id|
+          # GET /api/v0.1/page/:pagename request
+          recipe_json = ApiGateway.new.get_recipe(recipe_id).message
+          recipe = RecipeBuddy::RecipeRepresenter.new(OpenStruct.new)
+                                                 .from_json recipe_json
+
+          view_recipe = Views::Recipe.new(recipe)
+          view 'recipe', locals: { recipe: view_recipe }
         end
       end
     end

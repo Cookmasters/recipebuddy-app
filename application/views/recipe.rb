@@ -12,6 +12,14 @@ module RecipeBuddy
         @recipe.title
       end
 
+      def id
+        @recipe.id
+      end
+
+      def full_picture
+        @recipe.full_picture
+      end
+
       def page
         'Powered by ' #+ recipe.page.name
       end
@@ -25,6 +33,10 @@ module RecipeBuddy
           @recipe.reactions_love +
           @recipe.reactions_wow +
           @recipe.reactions_haha
+      end
+
+      def link
+        "/recipe/#{id}"
       end
 
       def negative_reactions
