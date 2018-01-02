@@ -1,34 +1,23 @@
-.container
-  div class="expand"
-    h1 class="expand-header"
-      = recipe.title
-    div class="expand-body"
-      div class="row mt-xlg" id="recipes_div"
-        div class="col-md-6"
-          p class="card-text"
-            == recipe.ingredients
-        div class="col-md-6" align= "center"
-          h1 class="expand-picture"
-            img src=recipe.full_picture
-    div class="card-body"
-      - if recipe.videos.none?
-        div class="row mt-xlg"
-          div class="col-md-12"
-            br
-            h2 No videos for now.
-            h2 Record yourself and be the first to Upload a video on youtube.
-            br
-            br
-      - else
-        div class="row mt-xlg"
-          div class="col-md-12"
-            h2 Our best Videos
-            div class="row mb-xlg"
-              include videos
-      h3 class="expand-title"
-        = recipe.page
-    div class="expand-footer"
-      span class="badge badge-success"
-        = recipe.positive_reactions
-      span class="badge badge-danger"
-        = recipe.negative_reactions
+div class="row"
+  div class="col-md-12"
+    div class="card border-primary"
+      h4 class="card-header" #{recipe.title}
+      img style="height: 500px; width: 100%; display: block;" src=recipe.full_picture alt="Card image"
+      div class="card-body"
+        p class="card-text"
+          == recipe.ingredients_links
+        h4 class="card-header" Our best YouTube videos
+        include videos
+      div class="card-footer"
+        span class="badge badge-success" data-toggle="tooltip" data-placement="top" title="Positive reactions (like, love, wow, haha)"
+          = recipe.positive_reactions
+        span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Negative reactions (sad, angry)"
+          = recipe.negative_reactions
+br
+br
+br
+br
+br
+br
+br
+br

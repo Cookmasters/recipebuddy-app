@@ -1,22 +1,18 @@
-br
-br
 form role="form" action="/page" method='post' id='add-page-form'
-    .row.vertical-align.query-bar
-      .col-xs-3
+    .row.vertical-align
+      .col-md-3
         .text-right Facebook public page URL:
-      .col-xs-6
+      .col-md-6
         input{
           type='text' name='page_url'
           id='page_url_input' class="form-control"
           placeholder="e.g.: https://www.facebook.com/RecipesAndCookingGuide"
         }
-      .col-xs-3
+      .col-md-3
         button{
             type='submit' id='page_form_submit' name='page_form_submit'
             value='submit' class="btn btn-success submit"
           } + Get recipes
-    .row
-      .col-xs-12.blank-row
 div class="container"
   - if recipes.none?
       div class="row mt-xlg"
@@ -24,11 +20,10 @@ div class="container"
           h2 No recipes for now. Please add a Facebook page to start.
   - else
     div class="row mt-xlg" id="recipes_div"
-      div class="col-md-12"
-        h2 Our best recipes
-      div class="row mb-xlg"
-    - recipes.collection.each.with_index do |recipe, index|
-        include recipe_card
+      h2 #{title}
+      div class="row mb-xlg" id="recipes_content"
+        - recipes.collection.each.with_index do |recipe, index|
+            include recipe_card
 
 
 br

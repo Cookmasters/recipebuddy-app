@@ -26,7 +26,8 @@ module RecipeBuddy
         if recipes.none?
           flash.now[:notice] = 'Add a Facebook public page to get started'
         end
-        view 'home', locals: { recipes: recipes }
+        title = 'Our best recipes'
+        view 'recipes', locals: { recipes: recipes, title: title }
       end
 
       routing.on 'page' do
@@ -61,13 +62,40 @@ module RecipeBuddy
 
       routing.on 'recipe' do
         routing.is Integer do |recipe_id|
-          # GET /api/v0.1/page/:pagename request
+          # GET /api/v0.1/recipe/:recipe_id request
           recipe_json = ApiGateway.new.get_recipe(recipe_id).message
           recipe = RecipeBuddy::RecipeRepresenter.new(OpenStruct.new)
                                                  .from_json recipe_json
-
+          num_videos = recipe.videos.count
           view_recipe = Views::Recipe.new(recipe)
-          view 'recipe', locals: { recipe: view_recipe }
+          view 'recipe', locals: { recipe: view_recipe, num_videos: num_videos }
+        end
+
+        routing.on 'all' do
+          routing.get do
+            # GET /api/v0.1/recipe/all request
+            recipes_json = ApiGateway.new.all_recipes.message
+            all_recipes = RecipeBuddy::RecipesRepresenter.new(OpenStruct.new)
+                                                         .from_json recipes_json
+
+            view_recipes = Views::AllRecipes.new(all_recipes)
+            title = 'All the recipes available'
+            view 'recipes', locals: { recipes: view_recipes, title: title }
+          end
+        end
+      end
+
+      routing.on 'loaded_recipe' do
+        routing.is Integer do |recipe_id|
+          # GET /api/v0.1/loaded_recipe/:recipe_id request
+          recipe_json = ApiGateway.new.get_recipe(recipe_id).message
+          recipe = RecipeBuddy::RecipeRepresenter.new(OpenStruct.new)
+                                                 .from_json recipe_json
+          view_recipe = Views::Recipe.new(recipe)
+
+          Slim::Engine.with_options(pretty: true) do
+            render :recipe_card, locals: { recipe: view_recipe }, layout: false
+          end
         end
       end
     end

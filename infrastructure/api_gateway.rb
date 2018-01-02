@@ -44,7 +44,7 @@ module RecipeBuddy
     end
 
     def all_recipes
-      call_api(:get, 'recipe')
+      call_api(:get, %w[recipe all])
     end
 
     def best_recipes

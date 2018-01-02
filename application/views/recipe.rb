@@ -42,6 +42,16 @@ module RecipeBuddy
       def negative_reactions
         @recipe.reactions_sad + @recipe.reactions_angry
       end
+
+      def ingredients_links
+        enable_links = ingredients
+        urls = URI.extract(enable_links, %w[http https])
+        urls.each do |url|
+          enable_links.gsub!(url,
+                             "<a href=#{url} target='_blank'>Click here</a>")
+        end
+        enable_links
+      end
     end
   end
 end
