@@ -2,10 +2,13 @@ div class="row"
   div class="col-md-12"
     div class="card border-primary"
       h4 class="card-header" #{recipe.title}
-      img style="height: 500px; width: 100%; display: block;" src=recipe.full_picture alt="Card image"
       div class="card-body"
-        p class="card-text"
-          == recipe.ingredients_links
+        div class="row"
+          div class="col-md-6"
+            p class="card-text"
+              == recipe.ingredients_links
+          div class="col-md-6"
+            img style="height: 500px; width: 500px; display: block;" src=recipe.full_picture alt="Card image"
         h4 class="card-header" Our best YouTube videos
         include videos
       div class="card-footer"
@@ -13,11 +16,3 @@ div class="row"
           = recipe.positive_reactions
         span class="badge badge-danger" data-toggle="tooltip" data-placement="top" title="Negative reactions (sad, angry)"
           = recipe.negative_reactions
-br
-br
-br
-br
-br
-br
-br
-br

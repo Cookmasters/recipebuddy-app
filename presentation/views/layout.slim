@@ -27,9 +27,7 @@ html
             li class="nav-item"
               a class="nav-link" href="/recipe/all" All the recipes
 
-    div class="container" style="margin-top:20px;"
-      include :flash_bar
-
+    div class="container" id="html_body"
       / JQuery and Bootstrap JS
       script{
         src="https://code.jquery.com/jquery-3.2.1.min.js"
@@ -50,7 +48,9 @@ html
           $('[data-toggle="tooltip"]').tooltip()
           $('.carousel').carousel()
         })
-
-      == yield
+      section style="min-height: 1000px;"
+        .container
+          include :flash_bar
+          == yield
 
       == render 'footer'
