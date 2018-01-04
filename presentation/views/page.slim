@@ -20,12 +20,12 @@ div class="container" id="recipes_container"
       $.ajax({
         url: link,
         type: 'GET',
-        dataType: 'json',
-        error:function(jqXHR){
-          $('#recipes_content').append(jqXHR.responseText);
+        dataType: 'html',
+        error:function(error){
+          console.log(error);
         },
         success: function(data) {
-          console.log(data);
+          $('#recipes_content').append(data);
         }
       });
     });
