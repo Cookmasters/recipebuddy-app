@@ -30,9 +30,10 @@ module RecipeBuddy
         view 'recipes', locals: { recipes: recipes, title: title }
       end
 
+      # # /page branch
       routing.on 'page' do
+        # GET # /page/:pagename request
         routing.is String do |pagename|
-          # GET /api/v0.1/page/:pagename request
           page_json = ApiGateway.new.get_page(pagename).message
           page = RecipeBuddy::PageRepresenter.new(OpenStruct.new)
                                              .from_json page_json
@@ -41,6 +42,7 @@ module RecipeBuddy
           view 'page', locals: { page: view_page }
         end
 
+        # POST # /page request
         routing.post do
           create_request = Forms::FacebookPageURLValidator.call(routing.params)
           result = AddPage.new.call(create_request)
@@ -60,9 +62,10 @@ module RecipeBuddy
         end
       end
 
+      # # /recipe branch
       routing.on 'recipe' do
+        # GET # /recipe/:recipe_id request
         routing.is Integer do |recipe_id|
-          # GET /api/v0.1/recipe/:recipe_id request
           recipe_json = ApiGateway.new.get_recipe(recipe_id).message
           recipe = RecipeBuddy::RecipeRepresenter.new(OpenStruct.new)
                                                  .from_json recipe_json
@@ -71,9 +74,10 @@ module RecipeBuddy
           view 'recipe', locals: { recipe: view_recipe, num_videos: num_videos }
         end
 
+        # # /recipe/all branch
         routing.on 'all' do
+          # GET # /recipe/all request
           routing.get do
-            # GET /api/v0.1/recipe/all request
             recipes_json = ApiGateway.new.all_recipes.message
             all_recipes = RecipeBuddy::RecipesRepresenter.new(OpenStruct.new)
                                                          .from_json recipes_json
@@ -85,7 +89,9 @@ module RecipeBuddy
         end
       end
 
+      # # /recipe branch
       routing.on 'loaded_recipe' do
+        # GET # /recipe/loaded_recipe/:recipe_id request
         routing.is Integer do |recipe_id|
           # GET /api/v0.1/loaded_recipe/:recipe_id request
           recipe_json = ApiGateway.new.get_recipe(recipe_id).message
