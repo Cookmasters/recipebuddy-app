@@ -32,6 +32,19 @@ module RecipeBuddy
 
       # # /page branch
       routing.on 'page' do
+        # # /page/all branch
+        routing.on 'all' do
+          # GET # /page/all request
+          routing.get do
+            pages_json = ApiGateway.new.all_pages.message
+            all_pages = RecipeBuddy::PagesRepresenter.new(OpenStruct.new)
+                                                     .from_json pages_json
+            view_pages = Views::AllPages.new(all_pages)
+            title = 'All the pages available'
+            view 'pages', locals: { pages: view_pages, title: title }
+          end
+        end
+
         # GET # /page/:pagename request
         routing.is String do |pagename|
           page_json = ApiGateway.new.get_page(pagename).message

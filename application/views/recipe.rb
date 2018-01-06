@@ -48,7 +48,7 @@ module RecipeBuddy
         urls = URI.extract(enable_links, %w[http https])
         urls.each do |url|
           enable_links.gsub!(url,
-                             "<a href=#{url} target='_blank'>Click here</a>")
+                             "<a href=#{url} target='_blank' class='btn btn-primary'>Click here</a>")
         end
         enable_links
       end

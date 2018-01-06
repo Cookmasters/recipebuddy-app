@@ -16,6 +16,10 @@ module RecipeBuddy
         'https://www.facebook.com/' + name
       end
 
+      def details
+        "/page/#{name}"
+      end
+
       def loading?
         return true if ws_channel_id
         false

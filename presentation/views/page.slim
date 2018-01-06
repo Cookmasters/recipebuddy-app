@@ -6,7 +6,7 @@ div class="container" id="recipes_container"
   - else
     div class="row mt-xlg" id="recipes_div"
       h2 Our recipes for the Facebook page: #{page.name}
-      div class="row mb-xlg" id="recipes_content"
+      div class="card-columns" id="recipes_content" style="margin-top: 25px;"
         - page.recipes.collection.each.with_index do |recipe, index|
             include recipe_card
 - if page.loading?

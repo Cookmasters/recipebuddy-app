@@ -51,8 +51,8 @@ module RecipeBuddy
       call_api(:get, %w[recipe best])
     end
 
-    def all_page
-      call_api(:get, 'page')
+    def all_pages
+      call_api(:get, %w[page all])
     end
 
     def get_page(pagename)
