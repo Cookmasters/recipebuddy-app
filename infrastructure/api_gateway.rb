@@ -80,8 +80,9 @@ module RecipeBuddy
                                                                 .join('/')
 
       result = HTTP.send(method, url_route)
-      raise(result.parse['message']) if result.code >= 300
-      ApiResponse.new(result.code, result.to_s)
+      result_code = result.code
+      raise(result.parse['message']) if result_code >= 300
+      ApiResponse.new(result_code, result.to_s)
     end
   end
 end
