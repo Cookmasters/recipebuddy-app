@@ -100,6 +100,22 @@ module RecipeBuddy
             view 'recipes', locals: { recipes: view_recipes, title: title }
           end
         end
+
+        # # /recipe/search branch
+        routing.on 'search' do
+          # GET # /recipe/search request
+          routing.is String do |keyword|
+            recipes_json = ApiGateway.new.search_recipes(keyword).message
+            all_recipes = RecipeBuddy::RecipesRepresenter.new(OpenStruct.new)
+                                                         .from_json recipes_json
+
+            view_recipes = Views::AllRecipes.new(all_recipes)
+
+            Slim::Engine.with_options(pretty: true) do
+              render :results, locals: { recipes: view_recipes }, layout: false
+            end
+          end
+        end
       end
 
       # # /recipe branch

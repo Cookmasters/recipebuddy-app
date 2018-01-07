@@ -45,8 +45,8 @@ html
 
       javascript:
         $(function () {
-          $('[data-toggle="tooltip"]').tooltip()
-          $('.carousel').carousel()
+          $('[data-toggle="tooltip"]').tooltip();
+          $('.carousel').carousel();
         })
       section style="min-height: 1000px;"
         .container
@@ -54,3 +54,24 @@ html
           == yield
 
       == render 'footer'
+
+      javascript:
+        $(function () {
+          $("#search-box").keyup(function(){
+            var link = "/recipe/search/" + $(this).val();
+        		$.ajax({
+          		type: "GET",
+          		url: link,
+              dataType: 'html',
+          		beforeSend: function(){
+                $("#suggesstion-box").html('');
+          		},
+          		success: function(data){
+                console.log(data);
+          			$("#suggesstion-box").show();
+          			$("#suggesstion-box").html(data);
+          			$("#search-box").css("background","#FFF");
+          		}
+          	});
+        	});
+        })

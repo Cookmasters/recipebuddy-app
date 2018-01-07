@@ -1,0 +1,7 @@
+- if recipes.none?
+  p class="" No recipe found
+- else
+  ul id="search-results" class="list-unstyled result-bucket"
+    - recipes.collection.each do |recipe|
+        li class=""
+          a href=recipe.link #{recipe.title}

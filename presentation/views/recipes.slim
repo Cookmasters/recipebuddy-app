@@ -1,4 +1,10 @@
-form role="form" action="/page" method='post' id='add-page-form'
+div id="search-form" class="search-form js-search-form"
+  form class="form-search" role="search"
+    div class="input-group"
+      input type="text" id="search-box" class="form-control" placeholder="Search for a recipe"
+  div class="instant-results" id="suggesstion-box"
+
+form role="form" action="/page" method='post' id='add-page-form' style="margin-top: 25px;"
     .row.vertical-align
       .col-md-3
         .text-right Facebook public page URL:

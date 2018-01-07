@@ -51,6 +51,10 @@ module RecipeBuddy
       call_api(:get, %w[recipe best])
     end
 
+    def search_recipes(keyword)
+      call_api(:get, ['recipe', 'search', keyword])
+    end
+
     def all_pages
       call_api(:get, %w[page all])
     end
